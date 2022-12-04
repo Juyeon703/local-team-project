@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>GOGOtennis</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <!-- CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- CSS -->
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/banner.css" rel="stylesheet" />
+    <link href="/css/localCategory.css" rel="stylesheet" />
+    <link href="/css/dateCarousel.css" rel="stylesheet" />
+
+</head>
+<body class="pt-6">
+<nav th:replace="fragments/bodyheader :: bodyHeader"></nav>
+
+<div class="board_banner_area mb-5">
+    <div class="board_banner_text">
+        <h1>Ranking</h1>
+        <p>Set Your Goals and Go Higher!</p>
+    </div>
+    <img src="/images/ranking4.jpg" alt="Contact US 배너 이미지">
+</div>
+
+<div class="album py-5">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 mb-3 ms-5 text-center">
+            <div class="col" th:if="${not #lists.isEmpty(topRank)}">
+                <div class="card shadow-sm rounded-5 bg-light" style="width: 20rem;">
+                    <div class="card-header py-3" style="background-color: #808080; border-top-right-radius: 30px; border-top-left-radius: 30px">
+                        <img src="/images/goldmedal.png" class="position-absolute" style="left: -7px; top: -1px" width="100px">
+                        <span class="text-white fs-2 my-0 fw-normal">1위</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col total mt-3 ms-3">
+                                <img th:src="${topRank.image}" class="rounded-circle" alt="프로필" style="object-fit: fill; width: 130px; height: 130px">
+                                <div class="fw-bold fs-6 mt-1" th:text="${topRank.nickname}">User1</div>
+                            </div>
+                            <div class="col total text-center mt-3">
+                                <ul class="list-unstyled mt-3 mb-0 fw-bold">
+                                    <li th:text="${topRank.record.win} + '승' + ${topRank.record.lose} + '패'">165승 3패</li>
+                                    <li th:text="${topRank.record.points} + '점'">1920점</li>
+                                    <li th:text="${topRank.record.rate} + '%'">82%</li>
+                                    <img class="profile_first img-fluid" style="width: 50px" alt="티어"/>
+                                    <li id="topRank" th:text="${topRank.tier}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" th:if="${not #lists.isEmpty(secondRank)}">
+                <div class="card mb-4 rounded-5 bg-light" style="width: 20rem;">
+                    <div class="card-header py-3" style="background-color: #808080; border-top-right-radius: 30px; border-top-left-radius: 30px">
+                        <img src="/images/silvermedal.png" class="position-absolute" style="left: -7px; top: -1px" width="100px">
+                        <span class="text-white fs-2 my-0 fw-normal">2위</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col total mt-3 ms-3">
+                                <img th:src="${secondRank.image}" class="rounded-circle" alt="프로필" style="object-fit: fill; width: 130px; height: 130px">
+                                <div class="fw-bold fs-6 mt-1" th:text="${secondRank.nickname}">User2</div>
+                            </div>
+                            <div class="col total text-center mt-3">
+                                <ul class="list-unstyled mt-3 mb-0 fw-bold">
+                                    <li th:text="${secondRank.record.win} + '승' + ${secondRank.record.lose} + '패'">165승 3패</li>
+                                    <li th:text="${secondRank.record.points} + '점'">1920점</li>
+                                    <li th:text="${secondRank.record.rate} + '%'">82%</li>
+                                    <img class="profile_second img-fluid" style="width: 50px" alt="티어"/>
+                                    <li id="secondRank" th:text="${secondRank.tier}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" th:if="${not #lists.isEmpty(thirdRank)}">
+                <div class="card mb-4 rounded-5 bg-light" style="width: 20rem;">
+                    <div class="card-header py-3" style="background-color: #808080; border-top-right-radius: 30px; border-top-left-radius: 30px">
+                        <img src="/images/bronzemedal.png" class="position-absolute" style="left: -7px; top: -1px" width="100px">
+                        <span class="text-white fs-2 my-0 fw-normal">3위</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col total mt-3 ms-3">
+                                <img th:src="${thirdRank.image}" class="rounded-circle" alt="프로필" style="object-fit: fill; width: 130px; height: 130px">
+                                <div class="fw-bold fs-6 mt-1" th:text="${thirdRank.nickname}">User2</div>
+                            </div>
+                            <div class="col total text-center mt-3">
+                                <ul class="list-unstyled mt-3 mb-0 fw-bold">
+                                    <li th:text="${thirdRank.record.win} + '승' + ${thirdRank.record.lose} + '패'">165승 3패</li>
+                                    <li th:text="${thirdRank.record.points} + '점'">1920점</li>
+                                    <li th:text="${thirdRank.record.rate} + '%'">82%</li>
+                                    <img class="profile_third img-fluid" style="width: 50px" alt="티어"/>
+                                    <li id="thirdRank" th:text="${thirdRank.tier}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- ranking table -->
+    <table class="table table-hover align-middle text-center">
+        <thead class="bg-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="text-center">닉네임</th>
+            <th scope="col">전적</th>
+            <th scope="col">점수</th>
+            <th scope="col">승률</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member, i: ${rank}" th:if="${member.role.toString() == 'MEMBER'}">
+            <td th:text="${i.index+4}">4</td>
+            <td th:text="${member.nickname}">닉네임</td>
+            <td th:text="${member.record.win} + '승' + ${member.record.lose} + '패'">전적</td>
+            <td th:text="${member.record.points} + '점'">점수</td>
+            <td th:text="${member.record.rate} + '%'">승률</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Footer-->
+<footer class="footer bg-white small text-center text-black-50">
+    <div class="container px-4 px-lg-5">Copyright &copy; 우아한1팀 GOGOtennis 2022</div>
+</footer>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+<!-- JS Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script src="/js/localCategory.js"></script>
+<script th:src="@{/js/tierCheck.js}"></script>
+
+</body>
+</html>

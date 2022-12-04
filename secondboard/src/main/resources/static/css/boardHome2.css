@@ -1,0 +1,151 @@
+/*.header {*/
+
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    !* justify-content: space-between; *!*/
+/*    height: 80px;*/
+/*    padding: 0 1rem;*/
+/*    position: sticky;*/
+/*    top: 0;*/
+/*    opacity: 0.7;*/
+/*    backdrop-filter: blur(10px);*/
+
+/*}*/
+/* .header에 justify-content: space-between; 대신 사용 가능 */
+.search-form {
+    width: 300px;
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: 3rem;
+}
+
+.primary {
+    padding: 1rem;
+}
+
+.h2 .primary{
+    text-align: center;
+    font-family: Nunito;
+}
+
+.secondary {
+    padding: 1rem;
+}
+
+.secondary-a {
+    background: white;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right-color: lightgrey;
+}
+
+.secondary-b {
+    color: black;
+    background: white;
+    text-decoration: #4b7976;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: lightgrey;
+}
+
+.footer {
+    padding: 1rem;
+    border-top: 1px solid lightgray;
+    text-align: center;
+}
+
+.modal {
+    display: none;
+    top: 80px;
+}
+
+.board-main .h3 {
+    position: center;
+}
+#modal-switch:checked ~ .modal {
+    display: flex;
+}
+
+label[for="modal-switch"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1.3rem;
+    right: 1rem;
+    /* z-index: 100; */
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    /* background: red; */
+}
+
+label[for="modal-switch"]:before {
+    content: '🎾';
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+#modal-switch:checked ~ label[for="modal-switch"]:before {
+    color: dodgerblue;
+}
+
+#modal-switch,
+label[for="modal-switch"] span {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+@media (min-width: 1024px) {
+    .page {
+        display: grid;
+        grid-template-columns: 20% 1fr 20%;
+    }
+
+    .header {
+        grid-column: 1 / 4;
+        grid-row: 1 / 2;
+    }
+
+    .banner {
+        grid-column: 1 / 4;
+
+    }
+
+    .primary {
+        grid-column: 2 / 3;
+        grid-row: 1 / 4;
+        align-content: start;
+    }
+
+    .secondary-a {
+        grid-column: 1 / 2;
+        grid-row: 1 / 4;
+        align-content: start;
+    }
+
+    .secondary-b {
+        grid-column: 3 / 4;
+        grid-row: 1 / 4;
+        align-content: start;
+    }
+
+    .footer {
+        grid-column: 1 / 4;
+        grid-row: 4 / 5;
+
+    }
+}
+
+@media (min-width: 1400px) {
+    .page {
+        grid-row-gap: initial;
+        grid-row-start: initial;
+        grid-template-columns: 250px 1fr 250px;
+        align-content: start;
+    }
+}

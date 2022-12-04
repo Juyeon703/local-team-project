@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>GOGOtennis</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <!-- CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+    <!-- CSS -->
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link href="/css/menu.css" rel="stylesheet"/>
+    <link href="/css/profileHome.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="application/javascript"></script>
+    <script type="application/javascript"
+            src="https://zelkun.tistory.com/attachment/cfile8.uf@99BB7A3D5D45C065343307.js"></script>
+</head>
+<body class="pt-6">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-shrink" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" th:href="@{/}">GOGOtennis</a>
+        <!-- <a class="navbar-brand" th:href="@{/}">
+             <img src="img/logo2.png" alt="logo" width="100">
+         </a>-->
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+        </button>
+        <div class="gap-5 collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/matching/home}">매치</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/tournament}">대회</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/ranking/home}">랭킹</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/boards/home}">커뮤니티</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/club}">동호회</a></li>
+            </ul>
+
+            <div class="gap-2 d-md-flex">
+                <div th:if="${session.loginMember == null}">
+                    <button type="button" class="btn btn-outline-primary"
+                            th:onclick="|location.href='@{/members/new}'|">회원가입
+                    </button>
+                    <button type="button" class="btn btn-outline-primary"
+                            th:onclick="|location.href='@{/login}'|">로그인
+                    </button>
+                </div>  <!-- TODO : 로그인 modal 창 구현 -->
+                <div th:if="${session.loginMember != null} and ${session.loginMember.provider.toString() == 'GOGOTENNIS'}">
+                    <button type="button" class="btn btn-outline-primary"
+                            th:onclick="|location.href='@{/members/profile/{id} (id=${session.loginMember.id})}' |" )>내
+                        정보
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" th:onclick="|location.href='@{/logout}'|">
+                        로그아웃
+                    </button>
+
+                </div>
+
+                <!-- 카카오 로그아웃-->
+                <div th:if="${session.loginMember != null} and ${session.loginMember.provider.toString() == 'KAKAO'}">
+                    <!-- TODO:내 정보 UI 구현-->
+                    <button type="button" class="btn btn-outline-primary"
+                            th:onclick="|location.href='@{/members/profile/{id} (id=${session.loginMember.id})}' |" )>내
+                        정보
+                    </button>
+                    <button type="button" class="btn btn-outline-primary"
+                    th:onclick="|location.href='@{https://kauth.kakao.com/oauth/logout?client_id=b70b62ddd16773ad4e495c5aa49dc006&logout_redirect_uri=localhost:8080/oauth/kakao/logout&response_type=code}'|">
+                        로그아웃
+                    </button>
+
+                </div>
+
+            </div> <!--gap-2 d-md-flex END-->
+
+        </div>
+    </div>
+</nav>
+
+<div class="about">
+    <h1>MyPage</h1>
+    <hr>
+    <div class="d-flex">
+        <div class="contact">
+            <div class="box" style="background: #BDBDBD;">
+<!--                <div th:if="${member.imgEn==null}">-->
+<!--                    <img th:if="${member.gender.name()=='MALE'}" src="/images/profile_ma.png">-->
+<!--                    <img th:if="${member.gender.name()=='FEMALE'}" src="/images/profile_fe.png">-->
+<!--                </div>-->
+<!--                <img th:if="${member.imgEn!=null}" th:src="'data:image/jpg;base64,'+${src}"-->
+<!--                     alt="대표이미지">-->
+                <img th:src="${member.image}">
+            </div>
+            <li class="py-2"></li>
+            <li><h3><span  id="loginNick" th:text="${member.nickname}"></span></h3></li>
+            <li class="mb-1"><span th:if="${member.provider.toString().equals('GOGOTENNIS')}"
+                                   th:text="${member.birthday.substring(0,4)} + '년 ' + ${member.birthday.substring(4,6)} + '월 ' + ${member.birthday.substring(6,8)} + '일'"></span>
+                <span th:if="${member.provider.toString().equals('KAKAO')}" th:text="${member.birthday}"></span>
+                <i th:if="${member.gender.name() == 'MALE'}" class="bi bi-gender-male"></i>
+                <i th:if="${member.gender.name() == 'FEMALE'}" class="bi bi-gender-female"></i>
+            </li>
+            <li class="mb-1"><span th:if="${member.provider.toString().equals('GOGOTENNIS')}" th:text="${member.phoneNumber}"></span></li>
+            <li><span th:text="${member.email}"></span></li>
+        </div>
+        <div class="story">
+            <h3 class="py-3">자기소개</h3>
+            <div>
+                <p th:text="${member.introduction}" style="word-wrap: break-word"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-2"></div>
+
+<div class="section">
+    <hr>
+    <h2 class="py-3">등급</h2>
+    <i class="bi bi-question-circle float-end fa-lg" type="button"
+       data-bs-toggle="modal" data-bs-target="#readMore"></i>
+    <div class="d-flex">
+        <div class="contact">
+            <div class="text-center">
+                <img class="profile me-5 img-fluid" alt=""/>
+                <h3><span class="tier" th:text="${member.getTier()}"></span></h3>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col total">
+                    <h3><strong>총 전적</strong></h3>
+                    <li style="list-style: none" th:text="${member.getRecord().getWin()} + '승 ' + ${member.getRecord().getLose()} + '패 ' + ${member.getRecord().getPenalty()} + '무효'"></li>
+                </div>
+                <div class="col total">
+                    <h3><strong>승점</strong></h3>
+                    <li style="list-style: none" th:text="${member.getRecord().getPoints()} + '점'"></li>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Level Info Modal -->
+<div class="modal fade" id="readMore" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-2" id="readMoreLabel">등급 산정 방법</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>티어</h4>
+                <h7>랭크 티어는 우뚝 솟은 단 하나의 꼭대기보다는 높이가 다양한 여러 산맥에 가깝습니다. 각각의 봉우리가 영광스러운 목표가 되죠!</h7>
+                <img class="level_info" src="/images/level_info.png" alt=""/>
+                <hr>
+                <h4>단계</h4>
+                <h7>각 티어는 목적지보다는 여정에 가까우며 단계는 그 여정의 이정표 역할을 합니다.</h7>
+                <div>
+                    <h8>기본 점수; 100점</h8>
+                </div>
+                <div>
+                    <h8>승리시 : 10 점</h8>
+                </div>
+                <div>
+                    <h8>패배시 : -7 점</h8>
+                </div>
+                <div>
+                    <h8>패널티 : -10 점</h8>
+                </div>
+                <img class="level_info" src="/images/level_info_2.png" alt=""/>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Level Info Modal End -->
+
+<div class="py-2"></div>
+
+<div class="section">
+    <hr>
+    <h2 class="py-3">참가 매치 현황</h2>
+    <div>
+        <table class="table table-hover align-middle bg-white">
+            <thead class="bg-light">
+            <tr>
+                <th></th>
+                <th class="text-center">매치 이름</th>
+                <th class="text-center">매치 타입</th>
+                <th class="text-center">경기 날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="beforePlayer : ${playerBeforeList}" th:onclick="|location.href='@{/matching/detail/{id} (id=${beforePlayer.matching.id})}'|" role="button">
+                <td class="py-5"></td>
+                <td class="text-center" th:text="${beforePlayer.matching.title}"></td>
+                <td class="text-center" th:text="${beforePlayer.matching.matchingType.title}"></td>
+                <td class="text-center" th:text="${beforePlayer.matching.matchingDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="section">
+    <h2 class="py-3">결과 등록 현황</h2>
+    <div>
+        <table class="table table-hover align-middle bg-white">
+            <thead class="bg-light">
+            <tr>
+                <th></th>
+                <th class="text-center">매치 이름</th>
+                <th class="text-center">매치 타입</th>
+                <th class="text-center">경기 날짜</th>
+                <th class="text-center">상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="afterPlayer : ${afterPlayerList}"
+                th:if="${afterPlayer.matching.matchingCondition.name() == 'DONE'}"
+                th:onclick="|location.href='@{/matching/detail/{id} (id=${afterPlayer.matching.id})}'|" role="button">
+                <td class="py-5"></td>
+                <!--                <td class="text-center" th:text="${player.matching.gameResult.title}"></td>-->
+                <td class="text-center" th:text="${afterPlayer.matching.title}"></td>
+                <td class="text-center" th:text="${afterPlayer.matching.matchingType.title}"></td>
+                <td class="text-center" th:text="${afterPlayer.matching.matchingDate}"></td>
+                <td class="text-center">
+                    <span class="text-bg-success badge rounded-pill py-2 px-4" th:if="${afterPlayer.resultStatus.name() == 'RESULTYES'}" th:text="등록완료"></span>
+                    <span class="text-bg-danger badge rounded-pill py-2 px-4" th:if="${afterPlayer.resultStatus.name() == 'RESULTNO'}" th:text="미등록"></span>
+                </td>
+<!--                <td class="text-center" th:text="${afterPlayer.resultStatus.title}"></td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="py-2"></div>
+
+<div class="section">
+    <h2 class="py-3">최근 전적 현황</h2>
+    <div>
+        <table class="table table-hover align-middle bg-white">
+            <thead class="bg-light">
+            <tr>
+                <th></th>
+                <th class="text-center">승/패</th>
+                <th class="text-center">매치 이름</th>
+                <th class="text-center">매치 타입</th>
+                <th class="text-center">경기 날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="player : ${playerList}" th:onclick="|location.href='@{/matching/detail/{id} (id=${player.matching.id})}'|" role="button">
+                <td class="py-5"></td>
+<!--                <td class="text-center" th:text="${player.matching.gameResult.title}"></td>-->
+                <td class="text-center" th:if="${player.team.toString() == 'A'}" th:text="${player.matching.gameResult.title}"></td>
+                <div th:if="${player.team.toString() == 'B'}">
+                <td class="text-center" th:if="${player.matching.gameResult.toString() == 'WIN'}" th:text="패배"></td>
+                <td class="text-center" th:if="${player.matching.gameResult.toString() == 'LOSE'}" th:text="승리"></td>
+                <td class="text-center" th:if="${player.matching.gameResult.toString() == 'PENALTY'}" th:text="무효"></td>
+                <td class="text-center" th:if="${player.matching.gameResult.toString() == 'NORECORD'}" th:text="결과미등록"></td>
+                </div>
+                <td class="text-center" th:text="${player.matching.title}"></td>
+                <td class="text-center" th:text="${player.matching.matchingType.title}"></td>
+                <td class="text-center" th:text="${player.matching.matchingDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="py-3"></div>
+<div class="d-md-flex justify-content-md-center">
+    <a type="button" class="btn btn-primary px-3 py-2 me-lg-1"
+       data-bs-toggle="modal" data-bs-target="#profileUpdateModal">정보 수정
+    </a>
+    <a th:if="${session.loginMember.provider.toString() == 'GOGOTENNIS'}" type="button" class="btn btn-primary px-3 py-2"
+       data-bs-toggle="modal" data-bs-target="#memberWithdrawal">회원 탈퇴
+    </a>
+</div>
+
+<!-- profile update Modal -->
+<div class="modal fade" id="profileUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-2" id="profileUpdateModalLabel">프로필 정보 수정</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form role="form" th:object="${form}" action="/members/profileUpdate" method="post" ENCTYPE="multipart/form-data"> <!-- signup form -->
+                    <input type="hidden" th:field="${form.id}" >
+                    <a hidden id="nickname_dup_check" style="color: red">중복된 닉네임 입니다</a>
+                    <a hidden id="nickname_validate" style="color: red">닉네임은 4 ~ 10자 이내여야 합니다</a>
+                    <div class="form-group input-group mb-4 border">
+                        <input id="nickname" type="text" class="form-control bg-none border-0"
+                               th:field="${member.nickname}" placeholder="닉네임을 입력해주세요."/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="profileImg" class="form-label">프로필 이미지</label>
+                        <input type="file" class="form-control" name="file" id="profileImg">
+                    </div>
+                    <div class="mb-3">
+                        <label for="selfIntroduction" class="form-label">자기 소개</label>
+                        <a hidden id="introduction-length-check" style="color: red">100자 이내로 작성해주세요.</a>
+                        <textarea class="form-control" th:field="${form.introduction}" id="selfIntroduction" rows="6" placeholder="자기소개를 입력해주세요."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger py-2" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="updatePf btn btn-primary py-2">수정하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--profile update modal end-->
+
+<!-- member withdrawal Modal -->
+<div class="modal fade" id="memberWithdrawal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-2" id="memberWithdrawalLabel">GOGOTENNIS 계정 삭제하기</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <p>언제든지 GOGOTENNIS 계정을 삭제할 수 있습니다.</p>
+                    <p>그러나 계정이 삭제되고 나면 마음이 바뀌어도 계정을 복구하지 못할 수 있습니다.</p>
+                </div>
+                    <hr>
+                    <div class="mb-3">
+                        <h5 class="text-sm-start">주의사항</h5>
+                        <li>계정에 저장된 데이터와 콘텐츠가 모두 삭제됩니다.</li>
+                        <li>계정으로 로그인하는 매치, 랭킹, 커뮤니티, 동호회 서비스를 이용할 수 없게 됩니다.</li>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input id="checkbox_withdrawl" class="form-check-input" type="checkbox" onclick="validateByCheckbox()">
+                        <label class="form-check-label">예, 이 GOGOTENNIS 계정과 모든 데이터를 완전히 삭제하고자 합니다.</label>
+                        <a hidden id="memberWithdrawlCheck" style="color: red; font-size: 0.8em">이 GOGOTENNIS 계정을 삭제할지 확인해 주세요.</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger py-2" data-bs-dismiss="modal">취소</button>
+                        <button disabled type="submit" class="withdrawl btn btn-primary py-2" th:onclick="deleteMember([[${memberId}]])">탈퇴하기</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- member withdrawal Modal end -->
+
+
+<!-- Footer-->
+<footer class="footer bg-white small text-center text-black-50">
+    <div class="container px-4 px-lg-5">Copyright &copy; 우아한1팀 GOGOtennis 2022</div>
+</footer>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+<!-- JS Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+<script src="/js/tierCheck.js"></script>
+<script src="/js/profileNickCheck.js"></script>
+<script src="/js/memberWithdrawl.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</div> <!-- Container End -->
+</body>
+</html>
